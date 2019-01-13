@@ -7,18 +7,63 @@
 
 package frc.robot.subsystem.lighting;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.subsystem.BitBucketSubsystem;
 
 /**
  * Add your docs here.
  */
-public class LightingSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class LightingSubsystem extends BitBucketSubsystem {
+  	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+	  
+	// Singleton method; use LightingSubsystem.instance() to get the LightingSubsystem instance.
+	public static LightingSubsystem instance() {
+		if(inst == null)
+			inst = new LightingSubsystem();
+		return inst;		
+	}
+	private static LightingSubsystem inst;	
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+  	@Override
+	public void diagnosticsInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void diagnosticsCheck() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void periodic() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void diagnosticsExecute() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDiagnosticsFlag(boolean enable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean getDiagnosticsFlag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

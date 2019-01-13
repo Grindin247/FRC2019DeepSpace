@@ -7,18 +7,62 @@
 
 package frc.robot.subsystem.climber;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.subsystem.BitBucketSubsystem;
 
 /**
  * Add your docs here.
  */
-public class ClimberSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class ClimberSubsystem extends BitBucketSubsystem {
+  	// Put methods for controlling this subsystem
+  	// here. Call these from Commands.
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+	// Singleton method; use ClimberSubsystem.instance() to get the ClimberSubsystem instance.
+	public static ClimberSubsystem instance() {
+		if(inst == null)
+			inst = new ClimberSubsystem();
+		return inst;		
+	}
+	private static ClimberSubsystem inst;	
+
+  	@Override
+	public void diagnosticsInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void diagnosticsCheck() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void periodic() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void diagnosticsExecute() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDiagnosticsFlag(boolean enable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean getDiagnosticsFlag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
