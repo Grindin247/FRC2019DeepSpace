@@ -7,10 +7,6 @@
 
 package frc.robot.subsystem.drive;
 
-/**
- * Add your docs here.
- */
-import frc.robot.Robot;
 import frc.robot.utils.CommandUtils;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -54,7 +50,7 @@ public class TurnBy extends Command {
     	
     	if (timeout || driveSubsystem.isTurnComplete(angle_deg)) 
     	{
-    		return CommandUtils.autoStateChange(this, new Idle());
+    		return CommandUtils.stateChange(new Idle());
     		
     	}
     	return false;

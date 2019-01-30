@@ -7,11 +7,10 @@ package frc.robot.subsystem.drive;
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-import frc.robot.Robot;
 import frc.robot.utils.CommandUtils;
-import frc.robot.RobotMap;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystem.drive.DriveConstants;
 
 public class Idle extends Command {
 	private final DriveSubsystem driveSubsystem = DriveSubsystem.instance();
@@ -19,8 +18,10 @@ public class Idle extends Command {
 	static double lastTestModeTime_sec = 0.0;
 	
 	// Toggle sign on each one
-	double moveDistance_inches = -2.0 * RobotMap.WHEEL_CIRCUMFERENCE_INCHES;
+	double moveDistance_inches = -2.0 * DriveConstants.WHEEL_CIRCUMFERENCE_INCHES;
 	double turnAngle_deg = -45.0;
+
+	private DriverStation ds = DriverStation.getInstance();
 	
     public Idle() 
     {
@@ -44,15 +45,10 @@ public class Idle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() 
-    {
-    	if( Robot.runMode == Robot.RunMode.TELEOP) 
-    	{
-    		return CommandUtils.stateChange(this, new DriverControl());
-    	}
-    	
+    {    	
     	// Getting into test mode requires 2 conditions to avoid inadvertent activation
     	// of future other test modes
-    	if( Robot.runMode == Robot.RunMode.TEST)
+    	if( ds.isTest())
     	{
     		// Throttle the test mode to prevent it from triggering more
     		// often than is necessary; serves a couple of purposes.
@@ -60,13 +56,23 @@ public class Idle extends Command {
     		// b) running some tests back-to-back can make it hard to see what is happening
     		// A changeable default test period of 2 seconds provides a reasonable chance to see
     		// what is happening
-    		if (driveSubsystem.getDiagnosticsFlag())	// Diagnostics can only be run once per reset cycle
+    		if (driveSubsystem.getDiagnosticsEnabled())	// Diagnostics can only be run once per reset cycle
     		{
     				// Don't run repeatedly because it could be harmful
-    			return CommandUtils.stateChange(this, new Diagnostics());
+    			return CommandUtils.stateChange(new Diagnostics());
     		}
-      }
-      return false;
+		}
+
+		// NOTE: isOperatorControl always returns true in Snobot. Need to know if
+		// that is true in real DS. For now the solution is to test for the other
+		// two states together
+	  
+		if( ! ds.isAutonomous() && !ds.isDisabled()) 
+		{
+			return CommandUtils.stateChange(new DriverControl());
+		}
+
+		return false;
     }
 
     // Called once after isFinished returns true

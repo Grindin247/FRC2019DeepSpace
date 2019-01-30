@@ -1,0 +1,541 @@
+{
+  "tabPane": [
+    {
+      "title": "Drive",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "5,0": {
+            "size": [
+              6,
+              4
+            ],
+            "content": {
+              "_type": "Differential Drivebase",
+              "_title": "Differential Drivebase",
+              "Wheels/Number of wheels": 4,
+              "Wheels/Wheel diameter": 80.0,
+              "Visuals/Show velocity vectors": true
+            }
+          },
+          "11,1": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "Split Button Chooser",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Turn Joystick Scale",
+              "_title": "SmartDashboard/DriveSubsystem/Turn Joystick Scale"
+            }
+          },
+          "11,0": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "Split Button Chooser",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Forward Joystick Scale",
+              "_title": "SmartDashboard/DriveSubsystem/Forward Joystick Scale"
+            }
+          },
+          "5,4": {
+            "size": [
+              6,
+              1
+            ],
+            "content": {
+              "_type": "Split Button Chooser",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Drive Style",
+              "_title": "SmartDashboard/DriveSubsystem/Drive Style"
+            }
+          },
+          "22,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PeriodicCounter",
+              "_title": "/SmartDashboard/DriveSubsystem/PeriodicCounter"
+            }
+          },
+          "21,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/TelemetryEnabled",
+              "_title": "SmartDashboard/DriveSubsystem/TelemetryEnabled"
+            }
+          },
+          "21,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/DiagnosticsEnabled",
+              "_title": "SmartDashboard/DriveSubsystem/DiagnosticsEnabled"
+            }
+          },
+          "11,3": {
+            "size": [
+              9,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Speed Factor",
+              "_title": "SmartDashboard/DriveSubsystem/Speed Factor",
+              "Graph/Visible time": 30.0,
+              "Visible data/SmartDashboard/DriveSubsystem/Speed Factor": true
+            }
+          },
+          "11,6": {
+            "size": [
+              9,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Turn Factor",
+              "_title": "SmartDashboard/DriveSubsystem/Turn Factor",
+              "Graph/Visible time": 30.0,
+              "Visible data/SmartDashboard/DriveSubsystem/Turn Factor": true
+            }
+          },
+          "15,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/CurrentCommand",
+              "_title": "/SmartDashboard/DriveSubsystem/CurrentCommand"
+            }
+          },
+          "8,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Lat Accel (g)",
+              "_title": "/SmartDashboard/DriveSubsystem/Lat Accel (g)"
+            }
+          },
+          "5,6": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Commanded Speed (ips)",
+              "_title": "/SmartDashboard/DriveSubsystem/Commanded Speed (ips)"
+            }
+          },
+          "5,7": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Commanded Turn (dps)",
+              "_title": "/SmartDashboard/DriveSubsystem/Commanded Turn (dps)"
+            }
+          },
+          "8,6": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Acheived Speed (ips)",
+              "_title": "/SmartDashboard/DriveSubsystem/Acheived Speed (ips)"
+            }
+          },
+          "8,7": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/Acheived Turn (dps)",
+              "_title": "/SmartDashboard/DriveSubsystem/Acheived Turn (dps)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Navigation",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "22,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/NavigationSubsystem/PeriodicCounter",
+              "_title": "/SmartDashboard/NavigationSubsystem/PeriodicCounter"
+            }
+          },
+          "21,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/NavigationSubsystem/TelemetryEnabled",
+              "_title": "SmartDashboard/NavigationSubsystem/TelemetryEnabled"
+            }
+          },
+          "21,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/NavigationSubsystem/DiagnosticsEnabled",
+              "_title": "SmartDashboard/NavigationSubsystem/DiagnosticsEnabled"
+            }
+          },
+          "5,1": {
+            "size": [
+              5,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/NavigationSubsystem/Yaw Angle (deg)",
+              "_title": "SmartDashboard/NavigationSubsystem/Yaw Angle (deg)",
+              "Graph/Visible time": 30.0,
+              "Visible data/SmartDashboard/NavigationSubsystem/Yaw Angle (deg)": true
+            }
+          },
+          "5,4": {
+            "size": [
+              5,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/NavigationSubsystem/Yaw Rate (dps)",
+              "_title": "SmartDashboard/NavigationSubsystem/Yaw Rate (dps)",
+              "Graph/Visible time": 30.0,
+              "Visible data/SmartDashboard/NavigationSubsystem/Yaw Rate (dps)": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Scoring",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "22,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ScoringSubsystem/PeriodicCounter",
+              "_title": "/SmartDashboard/ScoringSubsystem/PeriodicCounter"
+            }
+          },
+          "16,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ScoringSubsystem/Arm Angle",
+              "_title": "/SmartDashboard/ScoringSubsystem/Arm Angle"
+            }
+          },
+          "16,1": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ScoringSubsystem/Arm Ticks",
+              "_title": "/SmartDashboard/ScoringSubsystem/Arm Ticks"
+            }
+          },
+          "21,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/ScoringSubsystem/TelemetryEnabled",
+              "_title": "SmartDashboard/ScoringSubsystem/TelemetryEnabled"
+            }
+          },
+          "21,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/ScoringSubsystem/DiagnosticsEnabled",
+              "_title": "SmartDashboard/ScoringSubsystem/DiagnosticsEnabled"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Camera",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "5,0": {
+            "size": [
+              11,
+              7
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://FrontCam",
+              "_title": "FrontCam",
+              "Crosshair/Show crosshair": false,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": 68.63934426229508,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "22,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/VisionSubsystem/PeriodicCounter",
+              "_title": "SmartDashboard/VisionSubsystem/PeriodicCounter"
+            }
+          },
+          "21,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/VisionSubsystem/TelemetryEnabled",
+              "_title": "SmartDashboard/VisionSubsystem/TelemetryEnabled"
+            }
+          },
+          "21,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/VisionSubsystem/DiagnosticsEnabled",
+              "_title": "SmartDashboard/VisionSubsystem/DiagnosticsEnabled"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Climber",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "22,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberSubsystem/PeriodicCounter",
+              "_title": "/SmartDashboard/ClimberSubsystem/PeriodicCounter"
+            }
+          },
+          "10,1": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/ClimberSubsystem/ServoTestAngle(deg)",
+              "_title": "SmartDashboard/ClimberSubsystem/ServoTestAngle(deg)",
+              "Slider Settings/Min": -90.0,
+              "Slider Settings/Max": 90.0,
+              "Slider Settings/Block increment": 1.0
+            }
+          },
+          "10,3": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/ClimberSubsystem/CurrentServoAngle(deg)",
+              "_title": "SmartDashboard/ClimberSubsystem/CurrentServoAngle(deg)",
+              "Slider Settings/Min": -90.0,
+              "Slider Settings/Max": 90.0,
+              "Slider Settings/Block increment": 1.0
+            }
+          },
+          "21,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/ClimberSubsystem/DiagnosticsEnabled",
+              "_title": "SmartDashboard/ClimberSubsystem/DiagnosticsEnabled"
+            }
+          },
+          "21,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/ClimberSubsystem/TelemetryEnabled",
+              "_title": "SmartDashboard/ClimberSubsystem/TelemetryEnabled"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Lighting",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "22,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LightingSubsystem/PeriodicCounter",
+              "_title": "/SmartDashboard/LightingSubsystem/PeriodicCounter"
+            }
+          },
+          "5,0": {
+            "size": [
+              7,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LightingControl/Status",
+              "_title": "/SmartDashboard/LightingControl/Status"
+            }
+          },
+          "12,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LightingControl/ConnectionAttempts",
+              "_title": "SmartDashboard/LightingControl/ConnectionAttempts"
+            }
+          },
+          "21,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/LightingSubsystem/TelemetryEnabled",
+              "_title": "SmartDashboard/LightingSubsystem/TelemetryEnabled"
+            }
+          },
+          "21,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/LightingSubsystem/DiagnosticsEnabled",
+              "_title": "SmartDashboard/LightingSubsystem/DiagnosticsEnabled"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1936.0,
+    "height": 1015.0
+  }
+}

@@ -8,6 +8,9 @@
 package frc.robot.subsystem.vision;
 
 import frc.robot.subsystem.BitBucketSubsystem;
+import frc.robot.subsystem.lighting.LightingControl;
+import frc.robot.subsystem.lighting.LightingSubsystem;
+import frc.robot.subsystem.lighting.LightingConstants.LightingObjects;
 
 /**
  * Add your docs here.
@@ -22,7 +25,23 @@ public class VisionSubsystem extends BitBucketSubsystem {
 			inst = new VisionSubsystem();
 		return inst;		
 	}
-	private static VisionSubsystem inst;	
+	private static VisionSubsystem inst;
+
+	enum IlluminatorState
+	{
+		UNKNOWN,
+		OFF,
+		SNORE,
+		ON
+	}
+	private IlluminatorState illuminatorState = IlluminatorState.UNKNOWN;
+	
+	private VisionSubsystem()
+	{
+		setName("VisionSubsystem");
+	}
+
+	private LightingSubsystem lightingSubsystem = LightingSubsystem.instance();
 
   	@Override
 	public void diagnosticsInit() {
@@ -44,8 +63,28 @@ public class VisionSubsystem extends BitBucketSubsystem {
 
 	@Override
 	public void periodic() {
-		// TODO Auto-generated method stub
-		
+		if (ds.isDisabled())
+		{
+			setIlluminatorSnore();
+		}
+		else if (ds.isTest())
+		{
+			setIlluminatorOff();			
+		}
+		else
+		{
+			setIlluminatorOn(VisionConstants.DEFAULT_ILLUMINATOR_BRIGHTNESS);
+		}
+
+		updateBaseDashboard();	
+		if (getTelemetryEnabled())
+		{
+			
+		}
+		if (getDiagnosticsEnabled())
+		{
+			
+		}			
 	}
 
 	@Override
@@ -55,15 +94,57 @@ public class VisionSubsystem extends BitBucketSubsystem {
 	}
 
 	@Override
-	public void setDiagnosticsFlag(boolean enable) {
-		// TODO Auto-generated method stub
-		
+	public void initialize() {
+
+		initializeBaseDashboard();
+
+		// Turn on illuminator in a snoring posture
+		setIlluminatorSnore();
 	}
 
-	@Override
-	public boolean getDiagnosticsFlag() {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean isIlluminatorReady()
+	{
+		return lightingSubsystem.isReady();
+	}
+
+	protected void setIlluminatorOff()
+	{
+		if (illuminatorState != IlluminatorState.OFF)
+		{
+			lightingSubsystem.set(LightingObjects.VISION_SUBSYSTEM,
+								LightingControl.FUNCTION_OFF,
+								LightingControl.COLOR_BLACK,
+								0,
+								0);
+			illuminatorState = lightingSubsystem.isReady()?IlluminatorState.OFF:illuminatorState.UNKNOWN;
+		}
+	}
+
+	protected void setIlluminatorOn(int brightness)
+	{
+		if (illuminatorState != IlluminatorState.ON)
+		{
+			lightingSubsystem.set(LightingObjects.VISION_SUBSYSTEM,
+								LightingControl.FUNCTION_ON,
+								LightingControl.COLOR_GREEN,
+								0,
+								0,
+								brightness);
+
+			illuminatorState = lightingSubsystem.isReady()?IlluminatorState.ON:illuminatorState.UNKNOWN;
+		}		
+	}
+	protected void setIlluminatorSnore()
+	{
+		if (illuminatorState != IlluminatorState.SNORE)
+		{
+			lightingSubsystem.set(LightingObjects.VISION_SUBSYSTEM,
+								LightingControl.FUNCTION_SNORE,
+								LightingControl.COLOR_VIOLET,
+								0,
+								0);			
+			illuminatorState = lightingSubsystem.isReady()?IlluminatorState.SNORE:illuminatorState.UNKNOWN;
+		}				
 	}
 
 }

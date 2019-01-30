@@ -7,7 +7,6 @@
 
 package frc.robot.subsystem.drive;
 
-import frc.robot.Robot;
 import frc.robot.utils.CommandUtils;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -49,7 +48,7 @@ public class Diagnostics extends Command {
     	if(diagInitLoops >= driveSubsystem.DIAG_LOOPS_RUN) {
     		System.out.println("Checking Drive Diagnostics");
     		driveSubsystem.diagnosticsCheck();
-    		return CommandUtils.stateChange(this, new Idle());
+    		return CommandUtils.stateChange(new Idle());
     	}
         return false;
     }

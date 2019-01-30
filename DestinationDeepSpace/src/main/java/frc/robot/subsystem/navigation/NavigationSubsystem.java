@@ -7,6 +7,9 @@
 
 package frc.robot.subsystem.navigation;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystem.BitBucketSubsystem;
 
 /**
@@ -20,9 +23,30 @@ public class NavigationSubsystem extends BitBucketSubsystem {
 	public static NavigationSubsystem instance() {
 		if(inst == null)
 			inst = new NavigationSubsystem();
-		return inst;		
+		return inst;
 	}
-	private static NavigationSubsystem inst;	
+	private static NavigationSubsystem inst;
+
+	private NavigationSubsystem()
+	{
+		setName("NavigationSubsystem");
+	}
+
+	private AHRS ahrs;
+
+	// TODO: provide an accessor that fetches the most current state (6-DOF)
+	// and returns it in a structure for reference; this allows consumer
+	// to fetch the best available state, at the same time the periodic
+	// loop can be keeping a limited history to allow image sensor data
+	// to be correlated to past position and angle data; this history
+	// would be interpolated if there is sufficient time synchronization
+	// between this Robot code and the image data.
+
+	@Override
+	public void initialize() {
+		initializeBaseDashboard();
+		ahrs = BitBucketsAHRS.instance();
+	}
 
   	@Override
 	public void diagnosticsInit() {
@@ -42,9 +66,23 @@ public class NavigationSubsystem extends BitBucketSubsystem {
 		
 	}
 
+	protected void updateDashboard() {
+		SmartDashboard.putNumber( getName() + "/Yaw Angle (deg)", getYaw_deg());
+		SmartDashboard.putNumber( getName() + "/Yaw Rate (dps)", getYawRate_degPerSec());
+	}
+
 	@Override
 	public void periodic() {
-		// TODO Auto-generated method stub
+		updateBaseDashboard();
+		if (getTelemetryEnabled())
+		{
+			
+		}
+		if (getDiagnosticsEnabled())
+		{
+			
+		}		
+		updateDashboard();
 		
 	}
 
@@ -54,16 +92,12 @@ public class NavigationSubsystem extends BitBucketSubsystem {
 		
 	}
 
-	@Override
-	public void setDiagnosticsFlag(boolean enable) {
-		// TODO Auto-generated method stub
-		
+	public double getYaw_deg() {
+		return ahrs.getYaw();
+	}
+	public double getYawRate_degPerSec() {
+		return ahrs.getRate();
 	}
 
-	@Override
-	public boolean getDiagnosticsFlag() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

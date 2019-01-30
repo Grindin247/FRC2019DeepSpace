@@ -5,23 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystem;
+package frc.robot;
 
 /**
  * Add your docs here.
  */
-public class SubsystemUtilities {
-	public enum DiagnosticsScope 
-	{
-		BASIC,
-		EXTENDED
-	}
-
-	public enum DiagnosticsState 
-	{ 
-		UNKNOWN,
-		PASS,
-		FAIL
-	}
+public class ServoId {
+    public static final int CLIMB_SERVO_ID = 0;
 
 }

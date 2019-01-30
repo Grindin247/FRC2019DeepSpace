@@ -5,23 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystem;
+package frc.robot.subsystem.navigation;
 
 /**
  * Add your docs here.
  */
-public class SubsystemUtilities {
-	public enum DiagnosticsScope 
-	{
-		BASIC,
-		EXTENDED
-	}
-
-	public enum DiagnosticsState 
-	{ 
-		UNKNOWN,
-		PASS,
-		FAIL
-	}
-
+public class NavigationConstants {
 }

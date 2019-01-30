@@ -162,3 +162,6 @@ bin/
 .ipr
 .iws
 .IDEA
+.shelf/
+out/
+build/

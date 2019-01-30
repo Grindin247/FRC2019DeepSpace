@@ -6,31 +6,86 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystem;
+
 import frc.robot.subsystem.SubsystemUtilities.DiagnosticsState;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public abstract class BitBucketSubsystem extends Subsystem {
 	
-	protected boolean runDiagnostics = false;
+	protected boolean initializedBase = false;
+
+	// We require that extended telementry and diagnostics enabling
+	// reuturn to "OFF" at each reset. Because SendableChoosers remember
+	// their state in the NetworkTable (somewhere) we need to use
+	// boolean types for simple, resettable switches.
+	protected boolean telemetryEnabled = false;		// Really an "extended" telemetry set (more bandwidth)
+	protected boolean diagnosticsEnabled = false;
+
 	public DiagnosticsState lastKnownState = DiagnosticsState.UNKNOWN;
 	public int DIAG_LOOPS_RUN = 5;
+
+	protected int periodicCounter = 0;
+
+	protected static DriverStation ds = DriverStation.getInstance(); // Convenience
 	
 	public BitBucketSubsystem() {
 		
 	}
+
+	protected void initializeBaseDashboard()
+	{
+		SmartDashboard.putBoolean(getName()+"/TelemetryEnabled", telemetryEnabled);
+		SmartDashboard.putBoolean(getName()+"/DiagnosticsEnabled", diagnosticsEnabled);
+
+		initializedBase = true;
+		SmartDashboard.putBoolean(getName() + "/InitializedBase", initializedBase);
+	}
+
+	/** updateBaseDashboard - call from derived class periodic function */
+	protected void updateBaseDashboard()
+	{
+		SmartDashboard.putNumber(getName() + "/PeriodicCounter", periodicCounter++);
+		SmartDashboard.putString(getName() + "/CurrentCommand",getCurrentCommandName());
+	}
+
+	/**
+	 * getTelementryEnabled - returns the current dashboard state
+	 * NOTE: "Extended" Telemetry can be enabled any time at the expense of
+	 * network bandwidth
+	 */
+	public boolean getTelemetryEnabled()
+	{
+		telemetryEnabled = SmartDashboard.getBoolean(getName() + "/TelemetryEnabled", false);
+		return telemetryEnabled;
+	}
+	/**
+	 * getDiagnosticsEnabled - returns the current dashboard state
+	 * NOTE: Diagnostics can only be enabled when the DriverStation is in test mode
+	 */
+	public boolean getDiagnosticsEnabled()
+	{
+		diagnosticsEnabled = SmartDashboard.getBoolean(getName() + "/DiagnosticsEnabled", false);
+		if (! ds.isTest())
+		{
+			diagnosticsEnabled = false;
+			SmartDashboard.putBoolean(getName() + "/DiagnosticsEnabled", diagnosticsEnabled);
+		}
+		return diagnosticsEnabled;
+	}
+
+	public abstract void initialize();		// Force all derived classes to have these interfaces
 
 	public abstract void diagnosticsInit();
 	
 	public abstract void diagnosticsExecute();
 	
 	public abstract void diagnosticsCheck();
-	
-	public abstract void setDiagnosticsFlag(boolean enable);
-	
-	public abstract boolean getDiagnosticsFlag();
 	
 	@Override
     protected abstract void initDefaultCommand();

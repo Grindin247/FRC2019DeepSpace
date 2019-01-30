@@ -5,23 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystem;
+package frc.robot.subsystem.vision;
 
 /**
  * Add your docs here.
  */
-public class SubsystemUtilities {
-	public enum DiagnosticsScope 
-	{
-		BASIC,
-		EXTENDED
-	}
-
-	public enum DiagnosticsState 
-	{ 
-		UNKNOWN,
-		PASS,
-		FAIL
-	}
-
+public class VisionConstants {
+    public final static int DEFAULT_ILLUMINATOR_BRIGHTNESS = 50;
 }
