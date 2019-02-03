@@ -1,13 +1,11 @@
 package frc.robot.operatorinterface;
 
-// import java.util.HashSet;
-// import java.util.Set;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import frc.robot.subsystem.drive.DriveConstants;
 
 public class OI {
+
 	// Singleton method; use OI.instance() to get the OI instance.
 	public static OI instance() {
 		if(inst == null)
@@ -18,8 +16,16 @@ public class OI {
 	private OI() {
 	}
 
-	private static ControllerMapper controllerMapper = ControllerMapper.ps4();
-
+	// Only use the xbox joystick if we explicitly request it.
+	private static ControllerMapper controllerMapper;
+	static {
+		if (System.getProperty("xbox", null) != null) {
+			controllerMapper = ControllerMapper.xbox();
+		} else {
+			controllerMapper = ControllerMapper.ps4();
+		}
+	}
+  
 	private final static int DRIVER_JOYSTICK_ID = 0;
 	private final static int OPERATOR_JOYSTICK_ID = 1;
 
@@ -52,6 +58,14 @@ public class OI {
 		// the right (i.e. vectors R x P = Y and N x E = D)
         return DriveConstants.TURN_SIGN*driverControl.getRawAxis(DRIVE_TURN_AXIS);
 	}
+	/**
+	 * Temporary function to manually operate the scoring arm with the driver controller
+	 * @return
+	 */
+	public double manualArmRotate() {
+		return driverControl.getRawAxis(controllerMapper.getRightStickY());
+	}
+
 	/**
 	 * quickTurn_deg - returns a desired turn of +/-45, +/-90, +/-135 or 180 degrees
 	 * This can be used in a main drive loop to initiate a command that induces
@@ -98,13 +112,12 @@ public class OI {
 
 
 	// TODO: configure correct IDs
-	private final static int SCORING_HATCH_PANEL_GROUND = controllerMapper.getCircle();
-	private final static int SCORING_HATCH_PANEL_C 		= controllerMapper.getTriangle();
-	private final static int SCORING_HATCH_PANEL_R1 	= controllerMapper.getSquare();
-	private final static int SCORING_BALL_GROUND 		= controllerMapper.getCross();
-	private final static int SCORING_BALL_C 			= controllerMapper.getL1();
-	private final static int SCORING_BALL_LS 			= controllerMapper.getR1();
-	private final static int SCORING_BALL_R1 			= controllerMapper.getL2();
+	private final static int SCORING_HATCH_PANEL = controllerMapper.getCircle();
+	private final static int SCORING_GROUND      = controllerMapper.getCross();
+	private final static int SCORING_BALL_C      = controllerMapper.getL1();
+	private final static int SCORING_BALL_LS     = controllerMapper.getR1();
+	private final static int SCORING_BALL_R1     = controllerMapper.getL2();
+	private final static int SWITCH_ORIENTATION  = controllerMapper.getSquare();
 
 
 
@@ -158,20 +171,12 @@ public class OI {
       return operatorControl.getRawButton(LOW_CLIMB);
   }	
 
-  public boolean hpGround() {
-		return operatorControl.getRawButton(SCORING_HATCH_PANEL_GROUND);
-	}
 
-	public boolean hpCargo() {
-		return operatorControl.getRawButton(SCORING_HATCH_PANEL_C);
+	public boolean hp() {
+		return operatorControl.getRawButton(SCORING_HATCH_PANEL);
 	}
-
-	public boolean hpRocket1() {
-		return operatorControl.getRawButton(SCORING_HATCH_PANEL_R1);
-	}
-
-	public boolean bGround() {
-		return operatorControl.getRawButton(SCORING_BALL_GROUND);
+	public boolean ground() {
+		return operatorControl.getRawButton(SCORING_GROUND);
 	}
 
 	public boolean bCargo() {
@@ -184,6 +189,10 @@ public class OI {
 
 	public boolean bRocket1() {
 		return operatorControl.getRawButton(SCORING_BALL_R1);
+	}
+
+	public boolean switchOrientation() {
+		return operatorControl.getRawButton(SWITCH_ORIENTATION);
 	}
 }
 

@@ -10,11 +10,11 @@ package frc.robot.subsystem.scoring;
 import frc.robot.MotorId;
 import frc.robot.operatorinterface.OI;
 import frc.robot.subsystem.BitBucketSubsystem;
-import frc.robot.subsystem.drive.DriveSubsystem;
 import frc.robot.utils.talonutils.TalonUtils;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -33,6 +33,9 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 	private static ScoringSubsystem inst;
 
 
+	private Idle initialCommand;
+
+
 	private final WPI_TalonSRX rollerMotor;
 
 	private final WPI_TalonSRX rotationMotor1;
@@ -40,11 +43,10 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 
 
 
-	// is the robot moving forward?
-	private boolean lastForward = true;
-	private boolean forward = true;
-	// how long has the robot been going in the direction its been going for?
-	private int forwardIterations = 0;
+	// last orientation of the robot's arm
+	// true --> front
+	// false --> back
+	private boolean front = true;
 
 
 
@@ -112,10 +114,8 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 
 	/**
 	 * Direct the robot arm to a certain angle.
-	 * If front is true, the angle is from the front of the robot, if it is false, it
-	 * is from the back of the robot
 	 */
-	public void directArmTo(double angle, boolean front) {
+	public void directArmTo(double angle) {
 		double rev = angle / 360;
 
 		int ticks = (int) (rev * ScoringConstants.ARM_MOTOR_NATIVE_TICKS_PER_REV);
@@ -123,7 +123,7 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 		// if the arm is in the back of the robot
 		if (front == false) {
 			// switch the ticks so that the arm will go to intended position on the back too
-			ticks = 2 * ScoringConstants.ARM_MOTOR_SWITCH_TICK_THRESHOLD - ticks;
+			ticks = 2 * ScoringConstants.ARM_MOTOR_SWITCH_THRESHOLD_TICKS - ticks;
 		}
 
 		rotationMotor1.set(ControlMode.MotionMagic, ticks);
@@ -131,21 +131,15 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 
 
 
-	// TODO: in the future, we will want to move the arm so it is parallel (not antiparallel)
-	// to the robot's velocity. This should involve testing to see if the robot has been going
-	// in the direction its going in for a long enough period of time (if it changes its velocity
-	// back and forth, changing the arm position may tip the robot)
-	// tl;dr - find "front" yourself
-	public void goToLevel(ScoringConstants.ScoringLevel level, boolean front) {
-		double height = level.getHeight();
+	public void goToLevel(ScoringConstants.ScoringLevel level) {
+		double angle = level.getAngle_deg();
 
-		// tip of arm is given by (height off floor) + (length) * sin(angle)
-		double angle = Math.asin((height - ScoringConstants.ARM_AXIS_HEIGHT_OFF_FLOOR) / ScoringConstants.ARM_LENGTH);
-
-		directArmTo(angle, front);
+		directArmTo(angle);
 	}
 
-
+	public void manualArmOperate() {
+		rotationMotor1.set(ControlMode.PercentOutput, OI.instance().manualArmRotate());
+	}
 
 	/**
 	 * + pow --> spit out
@@ -176,6 +170,10 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 		rotationMotor1.set(ControlMode.PercentOutput, 0);
 	}
 
+	public void disable() {
+		setAllMotorsZero();
+	}
+
 	
 
 
@@ -186,26 +184,52 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 
 	public double getAngle() {
 		int ticks = rotationMotor1.getSelectedSensorPosition();
-		double rev = ticks / ScoringConstants.ARM_MOTOR_NATIVE_TICKS_PER_REV;
+		double rev = (ticks + 0.0) / ScoringConstants.ARM_MOTOR_NATIVE_TICKS_PER_REV;
 
 		return 360 * rev;
 	}
 
-
-
-
-
-  	@Override
-	public void diagnosticsInit() {
-		// TODO Auto-generated method stub
-		
-		ScoringDiagnostics.init();
+	// switch the orientation of the arm
+	public void switchOrientation() {
+		front = !front;
 	}
 
-	@Override
-	public void diagnosticsCheck() {
-		// TODO Auto-generated method stub
+	/** Get the selected level on the joystick */
+	// Used so much in commands that I just put it in the subsystem
+	public ScoringConstants.ScoringLevel getSelectedLevel() {
+		boolean hp = oi.hp();
+        boolean ground = oi.ground();
+        boolean bCargo = oi.bCargo();
+        boolean bLoadingStation = oi.bLoadingStation();
+		boolean bRocket1 = oi.bRocket1();
 		
+		ScoringConstants.ScoringLevel level = null;
+
+		if (hp) {
+			level = ScoringConstants.ScoringLevel.HP;
+		}
+		if (ground) {
+			if (level == null) { level = ScoringConstants.ScoringLevel.GROUND; }
+			else { return null; }
+		}
+		if (bCargo) {
+			if (level == null) { level = ScoringConstants.ScoringLevel.BALL_CARGO; }
+			else { return null; }
+		}
+		if (bLoadingStation) {
+			if (level == null) { level = ScoringConstants.ScoringLevel.BALL_LOADING_STATION; }
+			else { return null; }
+		}
+		if (bRocket1) {
+			if (level == null) { level = ScoringConstants.ScoringLevel.BALL_ROCKET_1; }
+			else { return null; }
+		}
+
+		return level;
+	}
+
+	public int getArmLevelTickError() {
+		return rotationMotor1.getClosedLoopError();
 	}
 	
 	@Override
@@ -214,85 +238,57 @@ public class ScoringSubsystem extends BitBucketSubsystem {
 		
 	}
 
+	public void startIdle() {
+		// Don't use default commands as they can catch you by surprise
+		System.out.println("Starting " + getName() + " Idle...");
+		if (initialCommand == null) {
+			initialCommand = new Idle(); // Only create it once
+		}
+		initialCommand.start();
+	}
+
 	@Override
 	public void periodic() {
+		clearDiagnosticsEnabled();
 		updateBaseDashboard();
 		if (getTelemetryEnabled()) {
 			SmartDashboard.putNumber(getName() + "/Arm Angle", getAngle());
 			SmartDashboard.putNumber(getName() + "/Arm Ticks", rotationMotor1.getSelectedSensorPosition());
 		}
-		if (getDiagnosticsEnabled())
-		{
-			double angle = SmartDashboard.getNumber(getName() + "/Test Angle", 0);
-			directArmTo(angle, true);
-		}
-
-
-
-		rotateScoringArm();
+		// commands will handle dealing with arm manipulation
 	}
 
 	@Override
-	public void diagnosticsExecute() {
+	public void diagnosticsInitialize() {
 		// TODO Auto-generated method stub
+	}
 
-		ScoringDiagnostics.periodic();
+	@Override
+	public void diagnosticsPeriodic() {
+		updateBaseDashboard();
+		if (getDiagnosticsEnabled())
+		{
+			double angle = SmartDashboard.getNumber(getName() + "/Test Angle", 0);
+			directArmTo(angle);
+		}
+
+		// commands will handle dealing with arm manipulation
+	}
+
+	@Override
+	public void diagnosticsCheck() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void initialize() {
 		initializeBaseDashboard();
 
-
-
 		SmartDashboard.putNumber(getName() + "/Test Angle", 0);
 	}
 
-
-
-
-
-	private void rotateScoringArm() {
-		// TODO: go to lowest selected arm level, we may want some ButtonMadness-esque implementation in the future, probably
-		ScoringConstants.ScoringLevel level = ScoringConstants.ScoringLevel.HP_GROUND;
-
-		if (oi.bLoadingStation()) { level = ScoringConstants.ScoringLevel.BALL_LOADING_STATION; }
-		if (oi.bCargo()) { level = ScoringConstants.ScoringLevel.BALL_CARGO; }
-		if (oi.bRocket1()) { level = ScoringConstants.ScoringLevel.BALL_ROCKET_1; }
-		if (oi.hpCargo()) { level = ScoringConstants.ScoringLevel.HP_CARGO; }
-		if (oi.hpRocket1()) { level = ScoringConstants.ScoringLevel.HP_ROCKET_1; }
-		if (oi.bGround()) { level = ScoringConstants.ScoringLevel.BALL_GROUND; }
-		if (oi.hpGround()) { level = ScoringConstants.ScoringLevel.HP_GROUND; }
-
-		// get current applied to motors to get direction
-		double current = DriveSubsystem.instance().getAverageCurrent_amps();
-		boolean direction;
-
-		// if robot not moving, keep arm where it is
-		if (current == 0) {
-			direction = lastForward;
-		// if it is moving, set the direction
-		} else {
-			direction = (current > 0);
-		}
-
-		if (direction == lastForward) {
-			forwardIterations++;
-		// if the direction changed, reset number of iterations where it was constant
-		} else {
-			forwardIterations = 0;
-
-			lastForward = direction;
-		}
-
-
-		// if enough time has past, change scoring arm direction (if necessary)
-		if (forwardIterations >= ScoringConstants.ITERATIONS_BEFORE_SCORING_ROTATION) {
-			forward = lastForward;
-		}
-
-		
-		
-		goToLevel(level, forward);
+	public TalonSRX getRotationMotor1() {
+		return rotationMotor1;
 	}
 }
