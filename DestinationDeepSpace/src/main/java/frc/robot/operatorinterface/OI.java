@@ -100,12 +100,13 @@ public class OI {
 	private final static int DRIVE_INVERT_BUTTON         = controllerMapper.getR2();
 	private final static int DRIVE_ALIGN_LOCK_BUTTON     = controllerMapper.getL1();
 	private final static int DRIVE_LOCK_BUTTON     		 = controllerMapper.getL2();
+	private final static int DRIVE_INTAKE_BUTTON   		 = controllerMapper.getCross();
 
 	// How do you like me now, Sam?
 	// TODO: Make a get/set function instead of setting it to public
 	public  final static int ARM_CLIMBER                 = controllerMapper.getBrandButton();
 	private final static int HIGH_CLIMB                  = controllerMapper.getLStickButton();
-	private final static int LOW_CLIMB                   = controllerMapper.getLStickButton();
+	private final static int LOW_CLIMB                   = controllerMapper.getRStickButton();
 
 	private final static int TEST_MOVE_BY_BUTTON         = controllerMapper.getTriangle(); /// TODO: Temp, use dashboard instead
 
@@ -118,6 +119,12 @@ public class OI {
 	private final static int SCORING_BALL_LS     = controllerMapper.getR1();
 	private final static int SCORING_BALL_R1     = controllerMapper.getL2();
 	private final static int SWITCH_ORIENTATION  = controllerMapper.getSquare();
+
+
+
+	// forced Idle for corresponding subsystems
+	private final static int DRIVER_IDLE   = controllerMapper.getTrackpad();
+	private final static int OPERATOR_IDLE = controllerMapper.getTrackpad();
 
 
 
@@ -149,6 +156,13 @@ public class OI {
 	public boolean  driveLock()
 	{
 		return driverControl.getRawButton(DRIVE_LOCK_BUTTON);
+	}
+    /**
+	 * intakeActive - turns the intake rollers to rotate inwards when true, pulling balls inside.
+	 */
+	public boolean  intakeActive()
+	{
+		return driverControl.getRawButton(DRIVE_INTAKE_BUTTON);
 	}
 
   public boolean testMoveBy() /// TODO: Temporary, use dashboard instead
@@ -193,6 +207,18 @@ public class OI {
 
 	public boolean switchOrientation() {
 		return operatorControl.getRawButton(SWITCH_ORIENTATION);
+	}
+
+
+
+
+
+	public boolean driverIdle() {
+		return driverControl.getRawButton(DRIVER_IDLE);
+	}
+
+	public boolean operatorIdle() {
+		return operatorControl.getRawButton(OPERATOR_IDLE);
 	}
 }
 

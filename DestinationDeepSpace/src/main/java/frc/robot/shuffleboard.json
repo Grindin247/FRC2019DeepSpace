@@ -331,6 +331,17 @@
               "_source0": "network_table:///SmartDashboard/ScoringSubsystem/CurrentCommand",
               "_title": "SmartDashboard/ScoringSubsystem/CurrentCommand"
             }
+          },
+          "5,5": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "Split Button Chooser",
+              "_source0": "network_table:///SmartDashboard/TestMode/mode",
+              "_title": "SmartDashboard/TestMode/mode"
+            }
           }
         }
       }
@@ -395,6 +406,17 @@
               "_type": "Toggle Switch",
               "_source0": "network_table:///SmartDashboard/VisionSubsystem/DiagnosticsEnabled",
               "_title": "SmartDashboard/VisionSubsystem/DiagnosticsEnabled"
+            }
+          },
+          "5,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///BucketVision/BucketVisionState",
+              "_title": "BucketVision/BucketVisionState"
             }
           }
         }
@@ -469,6 +491,17 @@
               "_type": "Toggle Switch",
               "_source0": "network_table:///SmartDashboard/ClimberSubsystem/TelemetryEnabled",
               "_title": "SmartDashboard/ClimberSubsystem/TelemetryEnabled"
+            }
+          },
+          "7,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberSubsystem/CurrentState()",
+              "_title": "/SmartDashboard/ClimberSubsystem/CurrentState()"
             }
           }
         }
